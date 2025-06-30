@@ -12,6 +12,7 @@ export const statusOptions = [
   { value: "on_hold", label: "En pausa" },
   { value: "dropped", label: "Abandonado" },
   { value: "plan_to_watch", label: "Pendiente" },
+  { value: "recommendation", label: "Recomendación" },
 ]
 
 export type MediaItem = {
@@ -19,11 +20,12 @@ export type MediaItem = {
   title: string
   cover_url?: string
   content_type: "anime" | "movie" | "series" | "game" | "album"
-  status: "watching" | "completed" | "on_hold" | "dropped" | "plan_to_watch"
+  status: "watching" | "completed" | "on_hold" | "dropped" | "plan_to_watch" | "recommendation"
   date_added: string
   platform?: string
   personal_score?: number
   notes?: string
+  recommended_by?: string
   created_at: string
   updated_at: string
 } 

@@ -15,7 +15,7 @@ const mediaItemSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['watching', 'completed', 'on_hold', 'dropped', 'plan_to_watch'],
+    enum: ['watching', 'completed', 'on_hold', 'dropped', 'plan_to_watch', 'recommendation'],
     required: true,
   },
   date_added: {
@@ -31,6 +31,9 @@ const mediaItemSchema = new mongoose.Schema({
     max: 10,
   },
   notes: {
+    type: String,
+  },
+  recommended_by: {
     type: String,
   },
 }, {

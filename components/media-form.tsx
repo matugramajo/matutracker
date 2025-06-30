@@ -27,6 +27,7 @@ export function MediaForm({ isOpen, onClose, onSubmit, initialData }: MediaFormP
     platform: initialData?.platform || "",
     personal_score: initialData?.personal_score?.toString() || "",
     notes: initialData?.notes || "",
+    recommended_by: initialData?.recommended_by || "",
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -35,8 +36,9 @@ export function MediaForm({ isOpen, onClose, onSubmit, initialData }: MediaFormP
     const submitData: Partial<MediaItem> = {
       ...formData,
       content_type: formData.content_type as "anime" | "movie" | "series" | "game" | "album",
-      status: formData.status as "watching" | "completed" | "on_hold" | "dropped" | "plan_to_watch",
+      status: formData.status as "watching" | "completed" | "on_hold" | "dropped" | "plan_to_watch" | "recommendation",
       personal_score: formData.personal_score ? Number.parseInt(formData.personal_score) : undefined,
+      recommended_by: formData.recommended_by || undefined,
     }
 
     if (initialData) {
@@ -56,6 +58,7 @@ export function MediaForm({ isOpen, onClose, onSubmit, initialData }: MediaFormP
         platform: "",
         personal_score: "",
         notes: "",
+        recommended_by: "",
       })
     }
   }
@@ -170,6 +173,20 @@ export function MediaForm({ isOpen, onClose, onSubmit, initialData }: MediaFormP
               rows={3}
             />
           </div>
+
+          {formData.status === "recommendation" && (
+            <div>
+              <Label htmlFor="recommended_by">Recomendado por *</Label>
+              <Input
+                id="recommended_by"
+                value={formData.recommended_by}
+                onChange={(e) => setFormData({ ...formData, recommended_by: e.target.value })}
+                placeholder="Nombre de quien te recomendó este contenido"
+                className="focus:ring-pink-500 focus:border-pink-500"
+                required={formData.status === "recommendation"}
+              />
+            </div>
+          )}
 
           <div className="flex justify-end gap-2 pt-4">
             <Button type="button" variant="outline" onClick={onClose}>
