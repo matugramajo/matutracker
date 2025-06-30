@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { storageService, type MediaItem } from "@/lib/storage"
+import { databaseService } from "@/lib/database"
+import { type MediaItem } from "@/lib/supabase"
 import { MediaCard } from "@/components/media-card"
 import { MediaForm } from "@/components/media-form"
 import { FiltersBar } from "@/components/filters-bar"
@@ -34,10 +35,11 @@ export default function HomePage() {
 
   const { toast } = useToast()
 
-  // Load items from localStorage
-  const loadItems = () => {
+  // Load items from MongoDB
+  const loadItems = async () => {
     try {
-      const loadedItems = storageService.getItems()
+      setLoading(true)
+      const loadedItems = await databaseService.getItems()
       setItems(loadedItems)
     } catch (error) {
       console.error("Error loading items:", error)
@@ -92,11 +94,11 @@ export default function HomePage() {
   }, [])
 
   // Handle form submission
-  const handleFormSubmit = (data: Partial<MediaItem>) => {
+  const handleFormSubmit = async (data: Partial<MediaItem>) => {
     try {
       if (editingItem) {
         // Update existing item
-        const updatedItem = storageService.updateItem(editingItem.id, data)
+        const updatedItem = await databaseService.updateItem(editingItem.id, data)
         if (updatedItem) {
           toast({
             title: "¡Actualizado!",
@@ -105,11 +107,13 @@ export default function HomePage() {
         }
       } else {
         // Create new item
-        storageService.addItem(data)
-        toast({
-          title: "¡Agregado!",
-          description: "El ítem se agregó correctamente",
-        })
+        const newItem = await databaseService.addItem(data)
+        if (newItem) {
+          toast({
+            title: "¡Agregado!",
+            description: "El ítem se agregó correctamente",
+          })
+        }
       }
 
       loadItems()
@@ -125,9 +129,9 @@ export default function HomePage() {
   }
 
   // Handle delete
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     try {
-      const success = storageService.deleteItem(id)
+      const success = await databaseService.deleteItem(id)
       if (success) {
         toast({
           title: "¡Eliminado!",
@@ -149,7 +153,7 @@ export default function HomePage() {
   // Handle export
   const handleExport = () => {
     try {
-      const data = storageService.exportData()
+      const data = JSON.stringify(items, null, 2)
       const blob = new Blob([data], { type: "application/json" })
       const url = URL.createObjectURL(blob)
       const a = document.createElement("a")
@@ -179,28 +183,30 @@ export default function HomePage() {
     const input = document.createElement("input")
     input.type = "file"
     input.accept = ".json"
-    input.onchange = (e) => {
+    input.onchange = async (e) => {
       const file = (e.target as HTMLInputElement).files?.[0]
       if (file) {
         const reader = new FileReader()
-        reader.onload = (e) => {
+        reader.onload = async (e) => {
           try {
             const jsonData = e.target?.result as string
-            const success = storageService.importData(jsonData)
-            if (success) {
-              loadItems()
-              toast({
-                title: "¡Importado!",
-                description: "Los datos se importaron correctamente",
-              })
-            } else {
-              throw new Error("Invalid data format")
+            const itemsToImport = JSON.parse(jsonData) as MediaItem[]
+            
+            // Import each item to MongoDB
+            for (const item of itemsToImport) {
+              await databaseService.addItem(item)
             }
+            
+            loadItems()
+            toast({
+              title: "¡Importado!",
+              description: "Los datos se importaron correctamente",
+            })
           } catch (error) {
             console.error("Error importing data:", error)
             toast({
               title: "Error",
-              description: "No se pudieron importar los datos. Verifica el formato del archivo.",
+              description: "No se pudieron importar los datos",
               variant: "destructive",
             })
           }
