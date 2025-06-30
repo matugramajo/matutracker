@@ -25,6 +25,7 @@ export default function HomePage() {
   const [filteredItems, setFilteredItems] = useState<MediaItem[]>([])
   const [loading, setLoading] = useState(true)
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const [isRecommendationFormOpen, setIsRecommendationFormOpen] = useState(false)
   const [editingItem, setEditingItem] = useState<MediaItem | null>(null)
   const [deleteId, setDeleteId] = useState<string | null>(null)
 
@@ -227,6 +228,11 @@ export default function HomePage() {
     setIsFormOpen(true)
   }
 
+  const handleAddRecommendation = () => {
+    setEditingItem(null)
+    setIsRecommendationFormOpen(true)
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-50 to-rose-100 flex items-center justify-center">
@@ -260,6 +266,7 @@ export default function HomePage() {
             onStatusChange={setStatusFilter}
             onSortChange={setSortBy}
             onAddNew={handleAddNew}
+            onAddRecommendation={handleAddRecommendation}
             onExport={handleExport}
             onImport={handleImport}
           />
@@ -311,6 +318,18 @@ export default function HomePage() {
         }}
         onSubmit={handleFormSubmit}
         initialData={editingItem}
+      />
+
+      {/* Recommendation Form Modal */}
+      <MediaForm
+        isOpen={isRecommendationFormOpen}
+        onClose={() => {
+          setIsRecommendationFormOpen(false)
+          setEditingItem(null)
+        }}
+        onSubmit={handleFormSubmit}
+        initialData={editingItem ? { ...editingItem, status: "recommendation" } : null}
+        isRecommendation={true}
       />
 
       {/* Delete Confirmation */}

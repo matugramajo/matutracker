@@ -2,7 +2,7 @@
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { Plus, Filter, Download, Upload } from "lucide-react"
+import { Plus, Filter, Download, Upload, Heart } from "lucide-react"
 import { contentTypes, statusOptions } from "@/lib/constants"
 
 interface FiltersBarProps {
@@ -13,6 +13,7 @@ interface FiltersBarProps {
   onStatusChange: (value: string) => void
   onSortChange: (value: string) => void
   onAddNew: () => void
+  onAddRecommendation: () => void
   onExport?: () => void
   onImport?: () => void
 }
@@ -25,6 +26,7 @@ export function FiltersBar({
   onStatusChange,
   onSortChange,
   onAddNew,
+  onAddRecommendation,
   onExport,
   onImport,
 }: FiltersBarProps) {
@@ -82,10 +84,16 @@ export function FiltersBar({
           </div>
         </div>
 
-        <Button onClick={onAddNew} className="bg-pink-600 hover:bg-pink-700 text-white">
-          <Plus className="h-4 w-4 mr-2" />
-          Agregar ítem
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={onAddNew} className="bg-pink-600 hover:bg-pink-700 text-white">
+            <Plus className="h-4 w-4 mr-2" />
+            Agregar ítem
+          </Button>
+          <Button onClick={onAddRecommendation} className="bg-purple-600 hover:bg-purple-700 text-white">
+            <Heart className="h-4 w-4 mr-2" />
+            Enviar recomendación
+          </Button>
+        </div>
       </div>
 
       {/* Export/Import buttons */}

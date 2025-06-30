@@ -16,14 +16,15 @@ interface MediaFormProps {
   onClose: () => void
   onSubmit: (data: Partial<MediaItem>) => void
   initialData?: MediaItem | null
+  isRecommendation?: boolean
 }
 
-export function MediaForm({ isOpen, onClose, onSubmit, initialData }: MediaFormProps) {
+export function MediaForm({ isOpen, onClose, onSubmit, initialData, isRecommendation = false }: MediaFormProps) {
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
     cover_url: initialData?.cover_url || "",
     content_type: initialData?.content_type || "",
-    status: initialData?.status || "",
+    status: initialData?.status || (isRecommendation ? "recommendation" : ""),
     platform: initialData?.platform || "",
     personal_score: initialData?.personal_score?.toString() || "",
     notes: initialData?.notes || "",
@@ -67,7 +68,12 @@ export function MediaForm({ isOpen, onClose, onSubmit, initialData }: MediaFormP
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-pink-800">{initialData ? "Editar ítem" : "Agregar nuevo ítem"}</DialogTitle>
+          <DialogTitle className="text-pink-800">
+            {isRecommendation 
+              ? (initialData ? "Editar recomendación" : "Enviar recomendación")
+              : (initialData ? "Editar ítem" : "Agregar nuevo ítem")
+            }
+          </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -121,8 +127,9 @@ export function MediaForm({ isOpen, onClose, onSubmit, initialData }: MediaFormP
                 value={formData.status}
                 onValueChange={(value) => setFormData({ ...formData, status: value })}
                 required
+                disabled={isRecommendation}
               >
-                <SelectTrigger className="focus:ring-pink-500 focus:border-pink-500">
+                <SelectTrigger className={`focus:ring-pink-500 focus:border-pink-500 ${isRecommendation ? 'bg-gray-100' : ''}`}>
                   <SelectValue placeholder="Seleccionar estado" />
                 </SelectTrigger>
                 <SelectContent>
@@ -174,7 +181,7 @@ export function MediaForm({ isOpen, onClose, onSubmit, initialData }: MediaFormP
             />
           </div>
 
-          {formData.status === "recommendation" && (
+          {(formData.status === "recommendation" || isRecommendation) && (
             <div>
               <Label htmlFor="recommended_by">Recomendado por *</Label>
               <Input
@@ -183,7 +190,7 @@ export function MediaForm({ isOpen, onClose, onSubmit, initialData }: MediaFormP
                 onChange={(e) => setFormData({ ...formData, recommended_by: e.target.value })}
                 placeholder="Nombre de quien te recomendó este contenido"
                 className="focus:ring-pink-500 focus:border-pink-500"
-                required={formData.status === "recommendation"}
+                required={formData.status === "recommendation" || isRecommendation}
               />
             </div>
           )}
@@ -192,8 +199,11 @@ export function MediaForm({ isOpen, onClose, onSubmit, initialData }: MediaFormP
             <Button type="button" variant="outline" onClick={onClose}>
               Cancelar
             </Button>
-            <Button type="submit" className="bg-pink-600 hover:bg-pink-700 text-white">
-              {initialData ? "Actualizar" : "Agregar"}
+            <Button type="submit" className={`${isRecommendation ? 'bg-purple-600 hover:bg-purple-700' : 'bg-pink-600 hover:bg-pink-700'} text-white`}>
+              {isRecommendation 
+                ? (initialData ? "Actualizar recomendación" : "Enviar recomendación")
+                : (initialData ? "Actualizar" : "Agregar")
+              }
             </Button>
           </div>
         </form>
