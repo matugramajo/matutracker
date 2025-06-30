@@ -7,16 +7,7 @@ import { MediaCard } from "@/components/media-card"
 import { MediaForm } from "@/components/media-form"
 import { FiltersBar } from "@/components/filters-bar"
 import { Button } from "@/components/ui/button"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
+
 import { useToast } from "@/hooks/use-toast"
 import { Loader2, Heart } from "lucide-react"
 
@@ -27,7 +18,6 @@ export default function HomePage() {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isRecommendationFormOpen, setIsRecommendationFormOpen] = useState(false)
   const [editingItem, setEditingItem] = useState<MediaItem | null>(null)
-  const [deleteId, setDeleteId] = useState<string | null>(null)
 
   // Filters
   const [contentTypeFilter, setContentTypeFilter] = useState("all")
@@ -129,27 +119,7 @@ export default function HomePage() {
     }
   }
 
-  // Handle delete
-  const handleDelete = async (id: string) => {
-    try {
-      const success = await databaseService.deleteItem(id)
-      if (success) {
-        toast({
-          title: "¡Eliminado!",
-          description: "El ítem se eliminó correctamente",
-        })
-        loadItems()
-      }
-    } catch (error) {
-      console.error("Error deleting item:", error)
-      toast({
-        title: "Error",
-        description: "No se pudo eliminar el ítem",
-        variant: "destructive",
-      })
-    }
-    setDeleteId(null)
-  }
+
 
   // Handle export
   const handleExport = () => {
@@ -291,7 +261,7 @@ export default function HomePage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
             {filteredItems.map((item) => (
-              <MediaCard key={item.id} item={item} onEdit={handleEdit} onDelete={(id) => setDeleteId(id)} />
+              <MediaCard key={item.id} item={item} onEdit={handleEdit} />
             ))}
           </div>
         )}
@@ -332,26 +302,7 @@ export default function HomePage() {
         isRecommendation={true}
       />
 
-      {/* Delete Confirmation */}
-      <AlertDialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Esta acción no se puede deshacer. El ítem será eliminado permanentemente de tu colección.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => deleteId && handleDelete(deleteId)}
-              className="bg-red-600 hover:bg-red-700"
-            >
-              Eliminar
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+
     </div>
   )
 }
