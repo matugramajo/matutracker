@@ -32,16 +32,16 @@ export function FiltersBar({
 }: FiltersBarProps) {
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between bg-white p-4 rounded-lg border border-pink-100 shadow-sm">
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+      <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between bg-white p-4 rounded-lg border border-pink-100 shadow-sm">
+        <div className="flex flex-col md:flex-row gap-3 items-start md:items-center">
           <div className="flex items-center gap-2 text-pink-700">
             <Filter className="h-4 w-4" />
             <span className="font-medium">Filtros:</span>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-2">
+          <div className="flex flex-col md:flex-row gap-2">
             <Select value={contentTypeFilter} onValueChange={onContentTypeChange}>
-              <SelectTrigger className="w-[180px] focus:ring-pink-500 focus:border-pink-500">
+              <SelectTrigger className="w-full md:w-[180px] focus:ring-pink-500 focus:border-pink-500">
                 <SelectValue placeholder="Tipo de contenido" />
               </SelectTrigger>
               <SelectContent>
@@ -55,7 +55,7 @@ export function FiltersBar({
             </Select>
 
             <Select value={statusFilter} onValueChange={onStatusChange}>
-              <SelectTrigger className="w-[200px] focus:ring-pink-500 focus:border-pink-500">
+              <SelectTrigger className="w-full md:w-[200px] focus:ring-pink-500 focus:border-pink-500">
                 <SelectValue placeholder="Estado" />
               </SelectTrigger>
               <SelectContent>
@@ -69,7 +69,7 @@ export function FiltersBar({
             </Select>
 
             <Select value={sortBy} onValueChange={onSortChange}>
-              <SelectTrigger className="w-[180px] focus:ring-pink-500 focus:border-pink-500">
+              <SelectTrigger className="w-full md:w-[180px] focus:ring-pink-500 focus:border-pink-500">
                 <SelectValue placeholder="Ordenar por" />
               </SelectTrigger>
               <SelectContent>
@@ -84,12 +84,12 @@ export function FiltersBar({
           </div>
         </div>
 
-        <div className="flex gap-2">
-          <Button onClick={onAddNew} className="bg-pink-600 hover:bg-pink-700 text-white">
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+          <Button onClick={onAddNew} className="bg-pink-600 hover:bg-pink-700 text-white w-full sm:w-auto">
             <Plus className="h-4 w-4 mr-2" />
             Agregar ítem
           </Button>
-          <Button onClick={onAddRecommendation} className="bg-purple-600 hover:bg-purple-700 text-white">
+          <Button onClick={onAddRecommendation} className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto">
             <Heart className="h-4 w-4 mr-2" />
             Enviar recomendación
           </Button>
