@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { databaseService } from "@/lib/database"
-import { type MediaItem } from "@/lib/supabase"
+import { type MediaItem } from "@/lib/constants"
 import { MediaCard } from "@/components/media-card"
 import { MediaForm } from "@/components/media-form"
 import { FiltersBar } from "@/components/filters-bar"

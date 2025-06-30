@@ -1,36 +1,12 @@
 import { createClient } from "@supabase/supabase-js"
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Only create client if environment variables are available
+export const supabase = supabaseUrl && supabaseAnonKey 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null
 
-export type MediaItem = {
-  id: string
-  title: string
-  cover_url?: string
-  content_type: "anime" | "movie" | "series" | "game" | "album"
-  status: "watching" | "completed" | "on_hold" | "dropped" | "plan_to_watch"
-  date_added: string
-  platform?: string
-  personal_score?: number
-  notes?: string
-  created_at: string
-  updated_at: string
-}
-
-export const contentTypes = [
-  { value: "anime", label: "Anime" },
-  { value: "movie", label: "Película" },
-  { value: "series", label: "Serie" },
-  { value: "game", label: "Juego" },
-  { value: "album", label: "Álbum" },
-]
-
-export const statusOptions = [
-  { value: "watching", label: "En progreso" },
-  { value: "completed", label: "Terminado" },
-  { value: "on_hold", label: "En pausa" },
-  { value: "dropped", label: "Abandonado" },
-  { value: "plan_to_watch", label: "Pendiente" },
-]
+// Re-export constants and types from the new constants file
+export { contentTypes, statusOptions, type MediaItem } from './constants'

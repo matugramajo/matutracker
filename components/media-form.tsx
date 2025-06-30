@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { type MediaItem, contentTypes, statusOptions } from "@/lib/storage"
+import { type MediaItem, contentTypes, statusOptions } from "@/lib/constants"
 
 interface MediaFormProps {
   isOpen: boolean
@@ -34,6 +34,8 @@ export function MediaForm({ isOpen, onClose, onSubmit, initialData }: MediaFormP
 
     const submitData: Partial<MediaItem> = {
       ...formData,
+      content_type: formData.content_type as "anime" | "movie" | "series" | "game" | "album",
+      status: formData.status as "watching" | "completed" | "on_hold" | "dropped" | "plan_to_watch",
       personal_score: formData.personal_score ? Number.parseInt(formData.personal_score) : undefined,
     }
 

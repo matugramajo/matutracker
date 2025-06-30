@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Edit, Trash2, Star, ChevronDown, ChevronUp } from "lucide-react"
-import { type MediaItem, contentTypes, statusOptions } from "@/lib/supabase"
+import { type MediaItem, contentTypes, statusOptions } from "@/lib/constants"
 
 interface MediaCardProps {
   item: MediaItem

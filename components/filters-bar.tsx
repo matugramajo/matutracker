@@ -3,7 +3,7 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { Plus, Filter, Download, Upload } from "lucide-react"
-import { contentTypes, statusOptions } from "@/lib/storage"
+import { contentTypes, statusOptions } from "@/lib/constants"
 
 interface FiltersBarProps {
   contentTypeFilter: string

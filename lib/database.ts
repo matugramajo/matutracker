@@ -1,4 +1,4 @@
-import { MediaItem } from './supabase';
+import { MediaItem } from './constants';
 
 const API_BASE_URL = '/api/media';
 
