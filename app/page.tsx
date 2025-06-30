@@ -241,8 +241,7 @@ export default function HomePage() {
             <Heart className="h-8 w-8 text-pink-600 fill-pink-600" />
             <h1 className="text-4xl font-bold text-pink-800">Mi Colección</h1>
           </div>
-          <p className="text-pink-600 text-lg">Trackea tus animes, películas, series, juegos y álbumes favoritos</p>
-          <p className="text-pink-500 text-sm mt-2">Los datos se guardan localmente en tu navegador</p>
+          <p className="text-pink-600 text-lg">Trackea mis animes, películas, series, juegos y álbumes favoritos</p>
         </div>
 
         {/* Filters */}

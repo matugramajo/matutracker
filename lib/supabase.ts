@@ -28,9 +28,9 @@ export const contentTypes = [
 ]
 
 export const statusOptions = [
-  { value: "watching", label: "Viendo/Jugando/Escuchando" },
+  { value: "watching", label: "En progreso" },
   { value: "completed", label: "Terminado" },
   { value: "on_hold", label: "En pausa" },
   { value: "dropped", label: "Abandonado" },
-  { value: "plan_to_watch", label: "Planeo ver/jugar/escuchar" },
+  { value: "plan_to_watch", label: "Pendiente" },
 ]
