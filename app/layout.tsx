@@ -5,6 +5,11 @@ export const metadata: Metadata = {
   title: 'MatuTracker',
   description: 'App para trackear el contenido que consumo uwu',
   generator: 'MatuTracker',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({
