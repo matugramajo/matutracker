@@ -1,11 +1,12 @@
 "use client"
 
 import Image from "next/image"
+import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Edit, Trash2, Star } from "lucide-react"
-import { type MediaItem, contentTypes, statusOptions } from "@/lib/storage"
+import { Edit, Trash2, Star, ChevronDown, ChevronUp } from "lucide-react"
+import { type MediaItem, contentTypes, statusOptions } from "@/lib/supabase"
 
 interface MediaCardProps {
   item: MediaItem
@@ -14,6 +15,8 @@ interface MediaCardProps {
 }
 
 export function MediaCard({ item, onEdit, onDelete }: MediaCardProps) {
+  const [isNotesExpanded, setIsNotesExpanded] = useState(false)
+  
   const contentTypeLabel = contentTypes.find((ct) => ct.value === item.content_type)?.label
   const statusLabel = statusOptions.find((s) => s.value === item.status)?.label
 
@@ -33,6 +36,9 @@ export function MediaCard({ item, onEdit, onDelete }: MediaCardProps) {
         return "bg-gray-100 text-gray-800 border-gray-200"
     }
   }
+
+  // Función para determinar si las notas son largas (más de 100 caracteres)
+  const isNotesLong = item.notes && item.notes.length > 100
 
   return (
     <Card className="group hover:shadow-lg transition-all duration-200 border-pink-100 hover:border-pink-200">
@@ -92,7 +98,33 @@ export function MediaCard({ item, onEdit, onDelete }: MediaCardProps) {
             </div>
           )}
 
-          {item.notes && <p className="text-sm text-gray-600 line-clamp-2">{item.notes}</p>}
+          {item.notes && (
+            <div className="space-y-1">
+              <p className={`text-sm text-gray-600 ${!isNotesExpanded && isNotesLong ? 'line-clamp-2' : ''}`}>
+                {item.notes}
+              </p>
+              {isNotesLong && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 px-2 text-xs text-pink-600 hover:text-pink-700 hover:bg-pink-50"
+                  onClick={() => setIsNotesExpanded(!isNotesExpanded)}
+                >
+                  {isNotesExpanded ? (
+                    <>
+                      <ChevronUp className="h-3 w-3 mr-1" />
+                      Ver menos
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="h-3 w-3 mr-1" />
+                      Ver más
+                    </>
+                  )}
+                </Button>
+              )}
+            </div>
+          )}
 
           <p className="text-xs text-gray-500">Agregado: {new Date(item.date_added).toLocaleDateString("es-ES")}</p>
         </div>
