@@ -1,30 +1,13 @@
-# Anime and media tracker
+# 🎮 MatuTracker
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+**MatuTracker** es una aplicación web donde puedo llevar un registro de todo lo que estoy viendo, jugando o escuchando: animes, películas, series, videojuegos y álbumes. La hice como un proyecto personal para tener todo en un solo lugar y no depender de apps separadas.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/matugramajos-projects/v0-anime-and-media-tracker)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/uzCcdNDwKNe)
+---
 
-## Overview
+## ✨ ¿Qué se puede hacer?
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
-
-## Deployment
-
-Your project is live at:
-
-**[https://vercel.com/matugramajos-projects/v0-anime-and-media-tracker](https://vercel.com/matugramajos-projects/v0-anime-and-media-tracker)**
-
-## Build your app
-
-Continue building your app on:
-
-**[https://v0.dev/chat/projects/uzCcdNDwKNe](https://v0.dev/chat/projects/uzCcdNDwKNe)**
-
-## How It Works
-
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+- Agregar cosas que estoy viendo, jugando o escuchando
+- Marcar si las terminé, las abandoné o las tengo pendientes
+- Escribir mi opinión, una nota personal y un puntaje
+- Filtrar por tipo (anime, peli, álbum...) o estado (visto, en curso, etc.)
+- Ver toda mi lista ordenada por fecha o por puntaje
