@@ -18,6 +18,7 @@ export function CommentsModal({ mediaItemId, title, onClose }: CommentsModalProp
   const [text, setText] = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
   const fetchComments = async () => {
     setLoading(true)
@@ -113,19 +114,33 @@ export function CommentsModal({ mediaItemId, title, onClose }: CommentsModalProp
               <div className="text-center text-gray-400">Aún no hay comentarios.</div>
             ) : (
               <ul className="space-y-4">
-                {comments.map((c) => (
-                  <li key={c._id} className="bg-pink-50 rounded-lg p-3">
-                    <div className="text-sm text-gray-700 whitespace-pre-line">{c.text}</div>
-                    <div className="flex justify-between items-center mt-2">
-                      <span className="text-xs text-pink-700 font-medium">
-                        {c.name ? c.name : "Anónimo"}
-                      </span>
-                      <span className="text-xs text-gray-400">
-                        {new Date(c.createdAt).toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" })}
-                      </span>
-                    </div>
-                  </li>
-                ))}
+                {comments.map((c) => {
+                  const isLong = c.text.length > 120
+                  const isExpanded = expanded[c._id]
+                  return (
+                    <li key={c._id} className="bg-pink-50 rounded-lg p-3">
+                      <div className="text-sm text-gray-700 whitespace-pre-line">
+                        {isLong && !isExpanded ? c.text.slice(0, 120) + '...' : c.text}
+                        {isLong && (
+                          <button
+                            className="ml-2 text-pink-600 hover:underline text-xs font-medium"
+                            onClick={() => setExpanded(e => ({ ...e, [c._id]: !isExpanded }))}
+                          >
+                            {isExpanded ? 'Ver menos' : 'Ver más'}
+                          </button>
+                        )}
+                      </div>
+                      <div className="flex justify-between items-center mt-2">
+                        <span className="text-xs text-pink-700 font-medium">
+                          {c.name ? c.name : "Anónimo"}
+                        </span>
+                        <span className="text-xs text-gray-400">
+                          {new Date(c.createdAt).toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" })}
+                        </span>
+                      </div>
+                    </li>
+                  )
+                })}
               </ul>
             )}
           </div>
