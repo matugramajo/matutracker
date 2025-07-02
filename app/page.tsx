@@ -196,33 +196,6 @@ export default function HomePage() {
     setIsRecommendationFormOpen(true)
   }
 
-  const handleDelete = async (item: MediaItem) => {
-    if (window.confirm(`¿Seguro que quieres borrar "${item.title}"? Esta acción no se puede deshacer.`)) {
-      try {
-        const ok = await databaseService.deleteItem(item.id)
-        if (ok) {
-          toast({
-            title: "¡Borrado!",
-            description: "El ítem se borró correctamente",
-          })
-          loadItems()
-        } else {
-          toast({
-            title: "Error",
-            description: "No se pudo borrar el ítem",
-            variant: "destructive",
-          })
-        }
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "No se pudo borrar el ítem",
-          variant: "destructive",
-        })
-      }
-    }
-  }
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-50 to-rose-100 flex items-center justify-center">
@@ -279,7 +252,7 @@ export default function HomePage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
             {filteredItems.map((item) => (
-              <MediaCard key={item.id} item={item} onDelete={handleDelete} />
+              <MediaCard key={item.id} item={item} />
             ))}
           </div>
         )}
