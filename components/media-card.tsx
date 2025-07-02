@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -17,6 +17,8 @@ interface MediaCardProps {
 export function MediaCard({ item, commentCount }: MediaCardProps) {
   const [isNotesExpanded, setIsNotesExpanded] = useState(false)
   const [showComments, setShowComments] = useState(false)
+  const [localCount, setLocalCount] = useState(commentCount ?? 0)
+  useEffect(() => { setLocalCount(commentCount ?? 0) }, [commentCount])
   
   const contentTypeLabel = contentTypes.find((ct) => ct.value === item.content_type)?.label
   const statusLabel = statusOptions.find((s) => s.value === item.status)?.label
@@ -121,7 +123,7 @@ export function MediaCard({ item, commentCount }: MediaCardProps) {
             className="flex items-center gap-1 text-pink-600 hover:text-pink-800 text-sm font-medium"
             onClick={() => setShowComments(true)}
           >
-            <MessageCircle className="h-4 w-4" /> Ver comentarios{typeof commentCount === 'number' ? ` (${commentCount})` : ''}
+            <MessageCircle className="h-4 w-4" /> Ver comentarios ({localCount})
           </button>
         </div>
       </CardContent>
@@ -130,6 +132,7 @@ export function MediaCard({ item, commentCount }: MediaCardProps) {
           mediaItemId={item.id}
           title={item.title}
           onClose={() => setShowComments(false)}
+          onCommentAdded={() => setLocalCount(c => c + 1)}
         />
       )}
     </Card>

@@ -9,9 +9,10 @@ interface CommentsModalProps {
   mediaItemId: string
   title: string
   onClose: () => void
+  onCommentAdded?: () => void
 }
 
-export function CommentsModal({ mediaItemId, title, onClose }: CommentsModalProps) {
+export function CommentsModal({ mediaItemId, title, onClose, onCommentAdded }: CommentsModalProps) {
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
   const [name, setName] = useState("")
@@ -63,6 +64,7 @@ export function CommentsModal({ mediaItemId, title, onClose }: CommentsModalProp
         setText("")
         setName("")
         fetchComments()
+        if (onCommentAdded) onCommentAdded()
       }
     } catch {
       setError("Error al enviar el comentario")
@@ -119,7 +121,7 @@ export function CommentsModal({ mediaItemId, title, onClose }: CommentsModalProp
                   const isExpanded = expanded[c._id]
                   return (
                     <li key={c._id} className="bg-pink-50 rounded-lg p-3">
-                      <div className="text-sm text-gray-700 whitespace-pre-line">
+                      <div className="text-sm text-gray-700 whitespace-pre-line break-words max-w-full">
                         {isLong && !isExpanded ? c.text.slice(0, 120) + '...' : c.text}
                         {isLong && (
                           <button
