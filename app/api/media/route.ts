@@ -7,7 +7,15 @@ export async function GET() {
   try {
     await connectDB();
     const items = await MediaItem.find({}).sort({ createdAt: -1 });
-    return NextResponse.json(items);
+    // Transformar cada item para exponer 'id' en vez de '_id'
+    const itemsWithId = items.map((item) => {
+      const obj = item.toObject();
+      obj.id = obj._id.toString();
+      delete obj._id;
+      delete obj.__v;
+      return obj;
+    });
+    return NextResponse.json(itemsWithId);
   } catch (error) {
     console.error('Error fetching items:', error);
     return NextResponse.json(
