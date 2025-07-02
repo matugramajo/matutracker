@@ -119,8 +119,6 @@ export default function HomePage() {
     }
   }
 
-
-
   // Handle export
   const handleExport = () => {
     try {
@@ -188,11 +186,6 @@ export default function HomePage() {
     input.click()
   }
 
-  const handleEdit = (item: MediaItem) => {
-    setEditingItem(item)
-    setIsFormOpen(true)
-  }
-
   const handleAddNew = () => {
     setEditingItem(null)
     setIsFormOpen(true)
@@ -201,6 +194,33 @@ export default function HomePage() {
   const handleAddRecommendation = () => {
     setEditingItem(null)
     setIsRecommendationFormOpen(true)
+  }
+
+  const handleDelete = async (item: MediaItem) => {
+    if (window.confirm(`¿Seguro que quieres borrar "${item.title}"? Esta acción no se puede deshacer.`)) {
+      try {
+        const ok = await databaseService.deleteItem(item.id)
+        if (ok) {
+          toast({
+            title: "¡Borrado!",
+            description: "El ítem se borró correctamente",
+          })
+          loadItems()
+        } else {
+          toast({
+            title: "Error",
+            description: "No se pudo borrar el ítem",
+            variant: "destructive",
+          })
+        }
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "No se pudo borrar el ítem",
+          variant: "destructive",
+        })
+      }
+    }
   }
 
   if (loading) {
@@ -237,8 +257,6 @@ export default function HomePage() {
             onSortChange={setSortBy}
             onAddNew={handleAddNew}
             onAddRecommendation={handleAddRecommendation}
-            onExport={handleExport}
-            onImport={handleImport}
           />
         </div>
 
@@ -261,7 +279,7 @@ export default function HomePage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
             {filteredItems.map((item) => (
-              <MediaCard key={item.id} item={item} onEdit={handleEdit} />
+              <MediaCard key={item.id} item={item} onDelete={handleDelete} />
             ))}
           </div>
         )}

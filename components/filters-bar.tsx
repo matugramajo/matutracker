@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Plus, Filter, Download, Upload, Heart } from "lucide-react"
 import { contentTypes, statusOptions } from "@/lib/constants"
 
-interface FiltersBarProps {
+export interface FiltersBarProps {
   contentTypeFilter: string
   statusFilter: string
   sortBy: string
@@ -14,8 +14,6 @@ interface FiltersBarProps {
   onSortChange: (value: string) => void
   onAddNew: () => void
   onAddRecommendation: () => void
-  onExport?: () => void
-  onImport?: () => void
 }
 
 export function FiltersBar({
@@ -27,8 +25,6 @@ export function FiltersBar({
   onSortChange,
   onAddNew,
   onAddRecommendation,
-  onExport,
-  onImport,
 }: FiltersBarProps) {
   return (
     <div className="flex flex-col gap-4">
@@ -95,34 +91,6 @@ export function FiltersBar({
           </Button>
         </div>
       </div>
-
-      {/* Export/Import buttons */}
-      {(onExport || onImport) && (
-        <div className="flex gap-2 justify-end">
-          {onExport && (
-            <Button
-              onClick={onExport}
-              variant="outline"
-              size="sm"
-              className="text-pink-600 border-pink-200 hover:bg-pink-50 bg-transparent"
-            >
-              <Download className="h-4 w-4 mr-2" />
-              Exportar datos
-            </Button>
-          )}
-          {onImport && (
-            <Button
-              onClick={onImport}
-              variant="outline"
-              size="sm"
-              className="text-pink-600 border-pink-200 hover:bg-pink-50 bg-transparent"
-            >
-              <Upload className="h-4 w-4 mr-2" />
-              Importar datos
-            </Button>
-          )}
-        </div>
-      )}
     </div>
   )
 }

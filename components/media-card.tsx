@@ -5,15 +5,15 @@ import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Edit, Star, ChevronDown, ChevronUp } from "lucide-react"
+import { Edit, Star, ChevronDown, ChevronUp, Trash2 } from "lucide-react"
 import { type MediaItem, contentTypes, statusOptions } from "@/lib/constants"
 
 interface MediaCardProps {
   item: MediaItem
-  onEdit: (item: MediaItem) => void
+  onDelete: (item: MediaItem) => void
 }
 
-export function MediaCard({ item, onEdit }: MediaCardProps) {
+export function MediaCard({ item, onDelete }: MediaCardProps) {
   const [isNotesExpanded, setIsNotesExpanded] = useState(false)
   
   const contentTypeLabel = contentTypes.find((ct) => ct.value === item.content_type)?.label
@@ -52,16 +52,17 @@ export function MediaCard({ item, onEdit }: MediaCardProps) {
             height={300}
             className="w-full h-48 object-cover rounded-lg bg-pink-50"
           />
-                      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <Button
-                size="sm"
-                variant="secondary"
-                className="h-8 w-8 p-0 bg-white/90 hover:bg-white"
-                onClick={() => onEdit(item)}
-              >
-                <Edit className="h-4 w-4" />
-              </Button>
-            </div>
+          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <Button
+              size="sm"
+              variant="destructive"
+              className="h-8 w-8 p-0 bg-white/90 hover:bg-white"
+              onClick={() => onDelete(item)}
+              title="Borrar"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
         <div className="space-y-2">
