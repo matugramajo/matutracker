@@ -74,13 +74,15 @@ export default function HomePage() {
           return a.title.localeCompare(b.title)
         case "title_desc":
           return b.title.localeCompare(a.title)
+        case "comments_desc":
+          return (commentCounts[b.id] ?? 0) - (commentCounts[a.id] ?? 0)
         default:
           return 0
       }
     })
 
     setFilteredItems(filtered)
-  }, [items, contentTypeFilter, statusFilter, sortBy])
+  }, [items, contentTypeFilter, statusFilter, sortBy, commentCounts])
 
   useEffect(() => {
     loadItems()

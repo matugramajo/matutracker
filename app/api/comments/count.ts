@@ -19,10 +19,13 @@ export async function GET(request: NextRequest) {
       return null;
     }
   }).filter(Boolean);
+  console.log('IDs recibidos:', ids);
+  console.log('ObjectIds generados:', objectIds);
   const counts = await Comment.aggregate([
     { $match: { mediaItemId: { $in: objectIds } } },
     { $group: { _id: '$mediaItemId', count: { $sum: 1 } } }
   ]);
+  console.log('Counts aggregate:', counts);
   // Convertir a objeto { mediaItemId: count }
   const result: Record<string, number> = {};
   ids.forEach(id => { result[id] = 0 });

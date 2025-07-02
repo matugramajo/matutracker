@@ -75,6 +75,7 @@ export function FiltersBar({
                 <SelectItem value="score_asc">Puntaje (menor)</SelectItem>
                 <SelectItem value="title_asc">Título (A-Z)</SelectItem>
                 <SelectItem value="title_desc">Título (Z-A)</SelectItem>
+                <SelectItem value="comments_desc">Más comentados</SelectItem>
               </SelectContent>
             </Select>
           </div>
