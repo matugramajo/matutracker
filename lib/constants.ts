@@ -28,4 +28,13 @@ export type MediaItem = {
   recommended_by?: string
   created_at: string
   updated_at: string
+}
+
+export type Comment = {
+  _id: string
+  mediaItemId: string
+  name?: string
+  text: string
+  createdAt: string
+  updatedAt: string
 } 

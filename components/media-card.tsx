@@ -5,8 +5,9 @@ import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Edit, Star, ChevronDown, ChevronUp } from "lucide-react"
+import { Edit, Star, ChevronDown, ChevronUp, MessageCircle } from "lucide-react"
 import { type MediaItem, contentTypes, statusOptions } from "@/lib/constants"
+import { CommentsModal } from "@/components/comments-modal"
 
 interface MediaCardProps {
   item: MediaItem
@@ -14,6 +15,7 @@ interface MediaCardProps {
 
 export function MediaCard({ item }: MediaCardProps) {
   const [isNotesExpanded, setIsNotesExpanded] = useState(false)
+  const [showComments, setShowComments] = useState(false)
   
   const contentTypeLabel = contentTypes.find((ct) => ct.value === item.content_type)?.label
   const statusLabel = statusOptions.find((s) => s.value === item.status)?.label
@@ -115,6 +117,21 @@ export function MediaCard({ item }: MediaCardProps) {
           <p className="text-xs text-gray-500">Agregado: {new Date(item.date_added).toLocaleDateString("es-ES")}</p>
         </div>
       </CardContent>
+      <div className="flex justify-end p-2 pt-0">
+        <button
+          className="flex items-center gap-1 text-pink-600 hover:text-pink-800 text-sm font-medium"
+          onClick={() => setShowComments(true)}
+        >
+          <MessageCircle className="h-4 w-4" /> Ver comentarios
+        </button>
+      </div>
+      {showComments && (
+        <CommentsModal
+          mediaItemId={item.id}
+          title={item.title}
+          onClose={() => setShowComments(false)}
+        />
+      )}
     </Card>
   )
 }
