@@ -43,8 +43,8 @@ export function MediaCard({ item }: MediaCardProps) {
   const isNotesLong = item.notes && item.notes.length > 100
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-200 border-pink-100 hover:border-pink-200">
-      <CardContent className="p-4">
+    <Card className="group hover:shadow-lg transition-all duration-200 border-pink-100 hover:border-pink-200 h-full flex flex-col">
+      <CardContent className="p-4 flex-1 flex flex-col">
         <div className="relative mb-3">
           <Image
             src={item.cover_url || "/placeholder.svg?height=300&width=200"}
@@ -54,8 +54,7 @@ export function MediaCard({ item }: MediaCardProps) {
             className="w-full h-48 object-cover rounded-lg bg-pink-50"
           />
         </div>
-
-        <div className="space-y-2">
+        <div className="space-y-2 flex-1">
           <h3 className="font-semibold text-gray-900 line-clamp-2 min-h-[2.5rem]">{item.title}</h3>
 
           <div className="flex flex-wrap gap-1">
@@ -115,9 +114,10 @@ export function MediaCard({ item }: MediaCardProps) {
           )}
 
           <p className="text-xs text-gray-500">Agregado: {new Date(item.date_added).toLocaleDateString("es-ES")}</p>
+        </div>
+        <div className="mt-4">
           <button
-            className="flex items-center gap-1 text-pink-600 hover:text-pink-800 text-sm font-medium mt-2 pl-0"
-            style={{paddingLeft: 0}}
+            className="flex items-center gap-1 text-pink-600 hover:text-pink-800 text-sm font-medium"
             onClick={() => setShowComments(true)}
           >
             <MessageCircle className="h-4 w-4" /> Ver comentarios
