@@ -11,9 +11,10 @@ import { CommentsModal } from "@/components/comments-modal"
 
 interface MediaCardProps {
   item: MediaItem
+  commentCount?: number
 }
 
-export function MediaCard({ item }: MediaCardProps) {
+export function MediaCard({ item, commentCount }: MediaCardProps) {
   const [isNotesExpanded, setIsNotesExpanded] = useState(false)
   const [showComments, setShowComments] = useState(false)
   
@@ -120,7 +121,7 @@ export function MediaCard({ item }: MediaCardProps) {
             className="flex items-center gap-1 text-pink-600 hover:text-pink-800 text-sm font-medium"
             onClick={() => setShowComments(true)}
           >
-            <MessageCircle className="h-4 w-4" /> Ver comentarios
+            <MessageCircle className="h-4 w-4" /> Ver comentarios{typeof commentCount === 'number' ? ` (${commentCount})` : ''}
           </button>
         </div>
       </CardContent>

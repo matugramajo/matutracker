@@ -26,6 +26,8 @@ export default function HomePage() {
 
   const { toast } = useToast()
 
+  const [commentCounts, setCommentCounts] = useState<Record<string, number>>({})
+
   // Load items from MongoDB
   const loadItems = async () => {
     try {
@@ -83,6 +85,21 @@ export default function HomePage() {
   useEffect(() => {
     loadItems()
   }, [])
+
+  // Obtener conteo de comentarios cuando cambian los items
+  useEffect(() => {
+    if (items.length === 0) {
+      setCommentCounts({})
+      return
+    }
+    const fetchCounts = async () => {
+      const ids = items.map(i => i.id).join(",")
+      const res = await fetch(`/api/comments/count?mediaItemIds=${ids}`)
+      const data = await res.json()
+      setCommentCounts(data)
+    }
+    fetchCounts()
+  }, [items])
 
   // Handle form submission
   const handleFormSubmit = async (data: Partial<MediaItem>) => {
@@ -252,7 +269,7 @@ export default function HomePage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
             {filteredItems.map((item) => (
-              <MediaCard key={item.id} item={item} />
+              <MediaCard key={item.id} item={item} commentCount={commentCounts[item.id] ?? 0} />
             ))}
           </div>
         )}
