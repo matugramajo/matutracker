@@ -1,9 +1,9 @@
+// app/api/comments/count/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Comment from '@/models/Comment';
 import mongoose from 'mongoose';
 
-// GET /api/comments/count?mediaItemIds=1,2,3
 export async function GET(request: NextRequest) {
   await connectDB();
   const { searchParams } = new URL(request.url);
@@ -19,16 +19,12 @@ export async function GET(request: NextRequest) {
       return null;
     }
   }).filter(Boolean);
-  console.log('IDs recibidos:', ids);
-  console.log('ObjectIds generados:', objectIds);
   const counts = await Comment.aggregate([
     { $match: { mediaItemId: { $in: objectIds } } },
     { $group: { _id: '$mediaItemId', count: { $sum: 1 } } }
   ]);
-  console.log('Counts aggregate:', counts);
-  // Convertir a objeto { mediaItemId: count }
   const result: Record<string, number> = {};
   ids.forEach(id => { result[id] = 0 });
   counts.forEach((c: any) => { result[c._id.toString()] = c.count });
   return NextResponse.json(result);
-} 
+}
