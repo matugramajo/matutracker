@@ -15,6 +15,10 @@ const commentSchema = new mongoose.Schema({
     required: true,
     maxlength: 500,
   },
+  likesCount: {
+    type: Number,
+    default: 0,
+  },
 }, {
   timestamps: true,
 });

@@ -140,6 +140,37 @@ export function CommentsModal({ mediaItemId, title, onClose, onCommentAdded }: C
                           {new Date(c.createdAt).toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" })}
                         </span>
                       </div>
+                      <div className="flex items-center gap-2 mt-2">
+                        <button
+                          className="flex items-center text-pink-600 hover:text-pink-800 text-xs font-semibold focus:outline-none"
+                          onClick={async () => {
+                            const res = await fetch(`/api/comments/${c._id}/like`, { method: 'POST' })
+                            if (res.ok) {
+                              const data = await res.json()
+                              setComments(comments => comments.map(com => com._id === c._id ? { ...com, likesCount: data.likesCount } : com))
+                            }
+                          }}
+                          aria-label="Dar like"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" width={16} height={16} className="mr-1"><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" /></svg>
+                          {c.likesCount}
+                        </button>
+                        {c.likesCount > 0 && (
+                          <button
+                            className="text-xs text-gray-400 hover:text-pink-400 ml-2"
+                            onClick={async () => {
+                              const res = await fetch(`/api/comments/${c._id}/like`, { method: 'DELETE' })
+                              if (res.ok) {
+                                const data = await res.json()
+                                setComments(comments => comments.map(com => com._id === c._id ? { ...com, likesCount: data.likesCount } : com))
+                              }
+                            }}
+                            aria-label="Quitar like"
+                          >
+                            Quitar like
+                          </button>
+                        )}
+                      </div>
                     </li>
                   )
                 })}
