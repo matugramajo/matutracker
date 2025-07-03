@@ -43,4 +43,5 @@ export type Comment = {
   likesCount: number
   likedIps: string[]
   likedByMe?: boolean
+  parentId?: string | null
 } 

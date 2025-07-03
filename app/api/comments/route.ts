@@ -37,6 +37,7 @@ export async function POST(request: NextRequest) {
     mediaItemId: body.mediaItemId,
     name: body.name,
     text: body.text,
+    parentId: body.parentId ?? null,
   });
   await comment.save();
   return NextResponse.json(comment, { status: 201 });
