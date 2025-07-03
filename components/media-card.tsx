@@ -140,39 +140,38 @@ export function MediaCard({ item, commentCount }: MediaCardProps) {
             <MessageCircle className="h-4 w-4" /> Ver comentarios ({localCount})
           </button>
           {typeof likesCount === 'number' && (
-            likedByMe ? (
-              <button
-                className="flex items-center gap-1 text-pink-600 hover:text-pink-800 text-sm font-medium"
-                onClick={async () => {
+            <button
+              className="flex items-center gap-1 text-pink-600 hover:text-pink-800 text-lg font-medium focus:outline-none"
+              onClick={async () => {
+                if (likedByMe) {
                   const res = await fetch(`/api/media/${item.id}/like`, { method: 'DELETE' })
                   if (res.ok) {
                     const data = await res.json()
                     setLikesCount(data.likesCount)
                     setLikedByMe(false)
                   }
-                }}
-                aria-label="Quitar like"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" width={16} height={16}><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" /></svg>
-                Quitar like ({likesCount})
-              </button>
-            ) : (
-              <button
-                className="flex items-center gap-1 text-pink-600 hover:text-pink-800 text-sm font-medium"
-                onClick={async () => {
+                } else {
                   const res = await fetch(`/api/media/${item.id}/like`, { method: 'POST' })
                   if (res.ok) {
                     const data = await res.json()
                     setLikesCount(data.likesCount)
                     setLikedByMe(true)
                   }
-                }}
-                aria-label="Dar like"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" width={16} height={16}><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" /></svg>
-                Like ({likesCount})
-              </button>
-            )
+                }
+              }}
+              aria-label={likedByMe ? "Quitar like" : "Dar like"}
+            >
+              {likedByMe ? (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" width={22} height={22}>
+                  <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 20 20" width={22} height={22}>
+                  <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
+                </svg>
+              )}
+              <span className="ml-1 text-base">{likesCount}</span>
+            </button>
           )}
         </div>
       </CardContent>
