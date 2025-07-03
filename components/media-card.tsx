@@ -49,13 +49,23 @@ export function MediaCard({ item, commentCount }: MediaCardProps) {
     <Card className="group hover:shadow-lg transition-all duration-200 border-pink-100 hover:border-pink-200 h-full flex flex-col">
       <CardContent className="p-4 flex-1 flex flex-col">
         <div className="relative mb-3">
-          <Image
-            src={item.cover_url || "/placeholder.svg?height=300&width=200"}
-            alt={item.title}
-            width={200}
-            height={300}
-            className="w-full h-48 object-cover rounded-lg bg-pink-50"
-          />
+          {item.cover_url && item.cover_url.toLowerCase().endsWith('.gif') ? (
+            <img
+              src={item.cover_url}
+              alt={item.title}
+              width={200}
+              height={300}
+              className="w-full h-48 object-cover rounded-lg bg-pink-50"
+            />
+          ) : (
+            <Image
+              src={item.cover_url || "/placeholder.svg?height=300&width=200"}
+              alt={item.title}
+              width={200}
+              height={300}
+              className="w-full h-48 object-cover rounded-lg bg-pink-50"
+            />
+          )}
         </div>
         <div className="space-y-2 flex-1">
           <h3 className="font-semibold text-gray-900 line-clamp-2 min-h-[2.5rem]">{item.title}</h3>
