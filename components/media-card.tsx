@@ -128,13 +128,51 @@ export function MediaCard({ item, commentCount }: MediaCardProps) {
 
           <p className="text-xs text-gray-500">Agregado: {new Date(item.date_added).toLocaleDateString("es-ES")}</p>
         </div>
-        <div className="mt-4">
+        <div className="mt-4 flex items-center gap-4">
           <button
             className="flex items-center gap-1 text-pink-600 hover:text-pink-800 text-sm font-medium"
             onClick={() => setShowComments(true)}
           >
             <MessageCircle className="h-4 w-4" /> Ver comentarios ({localCount})
           </button>
+          {typeof item.likesCount === 'number' && (
+            item.likedByMe ? (
+              <button
+                className="flex items-center gap-1 text-pink-600 hover:text-pink-800 text-sm font-medium"
+                onClick={async () => {
+                  const res = await fetch(`/api/media/${item.id}/like`, { method: 'DELETE' })
+                  if (res.ok) {
+                    const data = await res.json()
+                    item.likesCount = data.likesCount
+                    item.likedByMe = false
+                    // Forzar re-render
+                    window.dispatchEvent(new Event('item-like-updated'))
+                  }
+                }}
+                aria-label="Quitar like"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" width={16} height={16}><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" /></svg>
+                Quitar like ({item.likesCount})
+              </button>
+            ) : (
+              <button
+                className="flex items-center gap-1 text-pink-600 hover:text-pink-800 text-sm font-medium"
+                onClick={async () => {
+                  const res = await fetch(`/api/media/${item.id}/like`, { method: 'POST' })
+                  if (res.ok) {
+                    const data = await res.json()
+                    item.likesCount = data.likesCount
+                    item.likedByMe = true
+                    window.dispatchEvent(new Event('item-like-updated'))
+                  }
+                }}
+                aria-label="Dar like"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20" width={16} height={16}><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" /></svg>
+                Like ({item.likesCount})
+              </button>
+            )
+          )}
         </div>
       </CardContent>
       {showComments && (

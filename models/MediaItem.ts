@@ -36,6 +36,14 @@ const mediaItemSchema = new mongoose.Schema({
   recommended_by: {
     type: String,
   },
+  likesCount: {
+    type: Number,
+    default: 0,
+  },
+  likedIps: [{
+    type: String,
+    default: [],
+  }],
 }, {
   timestamps: true,
 });

@@ -28,6 +28,9 @@ export type MediaItem = {
   recommended_by?: string
   created_at: string
   updated_at: string
+  likesCount: number
+  likedIps: string[]
+  likedByMe?: boolean
 }
 
 export type Comment = {
