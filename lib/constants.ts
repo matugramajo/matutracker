@@ -38,4 +38,6 @@ export type Comment = {
   createdAt: string
   updatedAt: string
   likesCount: number
+  likedIps: string[]
+  likedByMe?: boolean
 } 

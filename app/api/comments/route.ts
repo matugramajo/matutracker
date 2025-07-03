@@ -11,7 +11,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'mediaItemId es requerido' }, { status: 400 });
   }
   const comments = await Comment.find({ mediaItemId }).sort({ createdAt: -1 });
-  return NextResponse.json(comments);
+  // Obtener IP del request
+  const xff = request.headers.get('x-forwarded-for');
+  const ip = xff ? xff.split(',')[0].trim() : (request.headers.get('x-real-ip') || '');
+  // Agregar likedByMe a cada comentario
+  const commentsWithLikedByMe = comments.map((c: any) => {
+    const obj = c.toObject();
+    obj.likedByMe = Array.isArray(obj.likedIps) && ip ? obj.likedIps.includes(ip) : false;
+    return obj;
+  });
+  return NextResponse.json(commentsWithLikedByMe);
 }
 
 // POST /api/comments
